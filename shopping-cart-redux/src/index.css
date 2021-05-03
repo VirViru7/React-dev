@@ -62,6 +62,8 @@ footer {
   align-items: center;
 }
 
+/* Product */
+
 .content {
   display: flex;
   flex-wrap: wrap;
@@ -88,17 +90,17 @@ footer {
 .product {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  
+  justify-content: space-between;
 }
 
-.products li{
+.products li {
   height: 47rem;
   padding: 1rem;
   margin: 1rem;
 }
 .product img {
   height: 37rem;
-  width: 37rem;
+  width: 29rem;
 }
 .product-price {
   display: flex;
@@ -117,4 +119,16 @@ footer {
 }
 .button.primary {
   background-color: #f0c040;
+}
+
+/* Product */
+
+/* Filter */
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 2rem;
+  border-bottom: 1px gray solid;
 }
