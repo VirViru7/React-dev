@@ -2,8 +2,10 @@ import "./App.css";
 
 function App() {
   return (
-    <div>
-      <header>Hello World</header>
+    <div className="grid-container">
+      <header>React Shopping Cart</header>
+      <main>Product List</main>
+      <footer>All Rights Are Reserved</footer>
     </div>
   );
 }
