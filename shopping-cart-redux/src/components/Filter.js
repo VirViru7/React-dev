@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class Filter extends Component {
   render() {
     return (
-      <div class="filter">
+      <div className="filter">
         <div>{this.props.count} Products</div>
         <div>
           Orders

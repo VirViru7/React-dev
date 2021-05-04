@@ -132,3 +132,34 @@ footer {
   margin: 2rem;
   border-bottom: 1px gray solid;
 }
+
+/* Cart */
+.cart {
+  padding: 1.7rem;
+  margin: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+.cart-header {
+  border-bottom: 1px gray solid;
+}
+
+.cart-items {
+  padding: 0;
+  width: 100%;
+  list-style-type: none;
+}
+
+.cart-items img {
+  width: 5rem;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  width: 100%;
+  border-top: 1px gray solid;
+  margin: 1rem 0rem 0rem 0rem;
+  padding: 1rem 0rem 0rem 0rem;
+}

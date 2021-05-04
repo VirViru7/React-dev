@@ -5,7 +5,7 @@ export default class Product extends Component {
   render() {
     return (
       <div>
-        <ul class="products">
+        <ul className="products">
           {this.props.products.map((product) => (
             <li key={product._id}>
               <div className="product">
@@ -16,7 +16,12 @@ export default class Product extends Component {
               </div>
               <div className="product-price">
                 <div> {formatCurrency(product.price)}</div>
-                <button className="button primary">Add To Cart</button>
+                <button
+                  onClick={() => this.props.addCart(product)}
+                  className="button primary"
+                >
+                  Add To Cart
+                </button>
               </div>
             </li>
           ))}
