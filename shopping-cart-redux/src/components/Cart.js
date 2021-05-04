@@ -2,12 +2,38 @@ import React, { Component } from "react";
 import formatCurrency from "../util";
 
 export default class Cart extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isProceedCheckOut: false,
+      userName: "",
+      email: "",
+      address: "",
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  createOrder = (e) => {
+    e.preventDefault();
+    const order = {
+      userName: this.state.userName,
+      email: this.state.email,
+      address: this.state.address,
+      cartItem: this.props.cartItem,
+    };
+
+    this.props.saveCreateorder(order);
+  };
+
   render() {
     const { cartItem } = this.props;
     return (
       <div>
         <div>
-          {cartItem.length === 0 ? (
+          {cartItem?.length === 0 ? (
             <div className="cart cart-header"> Cart is Empty</div>
           ) : (
             <div className="cart cart-header">
@@ -40,21 +66,66 @@ export default class Cart extends Component {
                 </li>
               ))}
             </ul>
-            {cartItem.length !== 0 && (
-              <div className="total">
-                <div style={{ flex: 3, display: "flex", alignItems: "center" }}>
-                  Total : {"  "}{" "}
-                  {formatCurrency(
-                    cartItem.reduce((a, c) => a + c.price * c.count, 0)
-                  )}{" "}
-                  {"  "}
+            {cartItem?.length !== 0 && (
+              <>
+                <div className="total">
+                  <div
+                    style={{ flex: 3, display: "flex", alignItems: "center" }}
+                  >
+                    Total : {"  "}{" "}
+                    {formatCurrency(
+                      cartItem.reduce((a, c) => a + c.price * c.count, 0)
+                    )}{" "}
+                    {"  "}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <button
+                      style={{ width: "12rem" }}
+                      className="button primary"
+                      onClick={() => this.setState({ isProceedCheckOut: true })}
+                    >
+                      Proceed
+                    </button>
+                  </div>
                 </div>
-                <div style={{ flex: 1 }}>
-                  <button style={{ width: "12rem" }} className="button primary">
-                    Proceed
-                  </button>
-                </div>
-              </div>
+                {this.state.isProceedCheckOut && (
+                  <div className="column w-100">
+                    <form onSubmit={this.createOrder}>
+                      <div className="m-2">Email</div>
+                      <div>
+                        <input
+                          type="email"
+                          name="email"
+                          required
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div className="m-2">name</div>
+                      <div>
+                        <input
+                          type="text"
+                          name="userName"
+                          required
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div className="m-2">Address</div>
+                      <div>
+                        <textarea
+                          name="address"
+                          required
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div className="m-2">
+                        <button type="submit" className="button primary">
+                          Submit Order
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
