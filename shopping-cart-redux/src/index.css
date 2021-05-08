@@ -82,12 +82,28 @@ textarea {
   flex-direction: column;
 }
 
-.m-2 {
+.p-1 {
+  padding: 1rem;
+}
+
+.m-1 {
+  margin: 1rem;
+}
+
+.mt-2 {
   margin-top: 2rem;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .w-100 {
   width: 100%;
+}
+
+.space-between {
+  justify-content: space-between;
 }
 
 /* Product */
@@ -103,6 +119,14 @@ textarea {
 
 .sidebar {
   flex: 1 20rem;
+}
+
+.modal-product-size {
+  background: lightgray;
+  padding: 1rem;
+  font-size: 1rem;
+  margin: 1rem;
+  border: 1px darkgray solid;
 }
 
 .products {
