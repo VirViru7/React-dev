@@ -97,24 +97,27 @@ class App extends React.Component {
           <main>
             <div className="content">
               <div className="main">
-                <Filter
+                {/* <Filter
                   count={this.state.products.length}
                   sort={this.state.sort}
                   size={this.state.size}
                   filterSort={(e) => this.handleFilterSort(e)}
                   filterSize={(e) => this.handleFilterSize(e)}
-                />
-                <Product
+                /> */}
+                <Filter />
+                {/* <Product
                   products={this.state.products}
                   addCart={this.addToCart}
-                />
+                /> */}
+                <Product />
               </div>
               <div className="sidebar">
-                <Cart
+                {/* <Cart
                   cartItem={this.state.cartItem}
                   removeItemFromCart={this.removeItemFromCart}
                   saveCreateorder={this.saveCreateorder}
-                />
+                /> */}
+                <Cart />
               </div>
             </div>
           </main>
