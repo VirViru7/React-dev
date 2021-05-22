@@ -81,6 +81,22 @@ textarea {
   display: flex;
   flex-direction: column;
 }
+.text-green {
+  color: green;
+}
+
+.order-success {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+.space-between{
+  justify-content: space-between;
+}
 
 .p-1 {
   padding: 1rem;

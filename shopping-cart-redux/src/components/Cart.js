@@ -3,6 +3,9 @@ import util from "../util";
 import Fade from "react-reveal/Fade";
 import { removeFromCart } from "../actions/cartActions";
 import { connect } from "react-redux";
+import { createOrder, clearOrder } from "../actions/orderActions";
+import Modal from "react-modal";
+import Zoom from "react-reveal/Zoom";
 
 class Cart extends Component {
   constructor(props) {
@@ -19,20 +22,26 @@ class Cart extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createOrder = (e) => {
+  createOrderFromCart = (e) => {
     e.preventDefault();
     const order = {
-      userName: this.state.userName,
+      name: this.state.userName,
       email: this.state.email,
       address: this.state.address,
-      cartItem: this.props.cartItem,
+      cartItems: this.props.cartItem,
+      total: this.props.cartItem.reduce((a, c) => a + c.price * c.count, 0),
     };
 
-    this.props.saveCreateorder(order);
+    this.props.createOrder(order);
+  };
+
+  closeModal = () => {
+    this.props.clearOrder();
+    this.setState({ isProceedCheckOut: false });
   };
 
   render() {
-    const { cartItem } = this.props;
+    const { cartItem, order } = this.props;
     return (
       <div>
         <div>
@@ -44,6 +53,72 @@ class Cart extends Component {
             </div>
           )}
         </div>
+        {order && (
+          <Modal isOpen={true} onRequestClose={this.closeModal}>
+            <Zoom>
+              <div className="w-100">
+                <div className="text-right">
+                  <button className="text-right" onClick={this.closeModal}>
+                    x
+                  </button>
+                </div>
+                <div className="order-success">
+                  <div>
+                    <h3 className="text-green">Your order has been placed.</h3>
+                  </div>
+                  <div>
+                    <label>
+                      {" "}
+                      Order Id : <b>{order._id}</b>
+                    </label>
+                  </div>
+                  <div className="column">
+                    <div className="row p-1 space-between">
+                      <div>
+                        <b>Name:</b>
+                      </div>
+                      <div>{order.name}</div>
+                    </div>
+                    <div className="row p-1 space-between">
+                      <div>
+                        <b>Email:</b>
+                      </div>
+                      <div>{order.email}</div>
+                    </div>
+                    <div className="row p-1 space-between">
+                      <div>
+                        <b>Address:</b>
+                      </div>
+                      <div>{order.address}</div>
+                    </div>
+                    <div className="row p-1 space-between">
+                      <div>
+                        <b>Total:</b>
+                      </div>
+                      <div>
+                        <div>{util.formatCurrency(order.total)}</div>
+                      </div>
+                    </div>
+                    <div className="row p-1  space-between">
+                      <div>
+                        <b>cart Items:</b>
+                      </div>
+                      <div>
+                        {order.cartItems.map((item) => (
+                          <div class="col">
+                            <div key={item._id}>
+                              {item.count} x {item.price} {""} {item.title}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Zoom>
+          </Modal>
+        )}
         <div>
           <div className="cart">
             <Fade left cascade>
@@ -65,9 +140,7 @@ class Cart extends Component {
                       </span>
                       <button
                         className="button primary"
-                        onClick={() =>
-                          this.props.removeItemFromCart(item)
-                        }
+                        onClick={() => this.props.removeItemFromCart(item)}
                       >
                         Remove
                       </button>
@@ -101,7 +174,7 @@ class Cart extends Component {
                 {this.state.isProceedCheckOut && (
                   <Fade right cascade>
                     <div className="column w-100">
-                      <form onSubmit={this.createOrder}>
+                      <form onSubmit={this.createOrderFromCart}>
                         <div className="mt-2">Email</div>
                         <div>
                           <input
@@ -148,14 +221,16 @@ class Cart extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    order: state.orders.order,
     cartItem: state.carts.cartItems || [],
   };
 };
 
 const mapStateToDispatch = (dispatch) => {
   return {
-    removeItemFromCart: (product) =>
-      dispatch(removeFromCart(product)),
+    removeItemFromCart: (product) => dispatch(removeFromCart(product)),
+    createOrder: (order) => dispatch(createOrder(order)),
+    clearOrder: () => dispatch(clearOrder()),
   };
 };
 

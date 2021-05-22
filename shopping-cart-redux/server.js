@@ -27,15 +27,13 @@ mongoose
 
 const Product = mongoose.model(
   "products",
-  new mongoose.Schema(
-    {
-      title: String,
-      description: String,
-      image: String,
-      availableSizes: [String],
-      price: Number,
-    },
-  )
+  new mongoose.Schema({
+    title: String,
+    description: String,
+    image: String,
+    availableSizes: [String],
+    price: Number,
+  })
 );
 
 app.get("/api/products", async (req, res) => {
@@ -52,6 +50,49 @@ app.post("/api/products", async (req, res) => {
 app.delete("/api/products/:id", async (req, res) => {
   const deletedProduct = await Product.findByIdAndDelete(req.params.id);
   res.send(deletedProduct);
+});
+
+const Order = mongoose.model(
+  "orders",
+  new mongoose.Schema(
+    {
+      email: String,
+      name: String,
+      address: String,
+      total: Number,
+      cartItems: [
+        {
+          _id: String,
+          title: String,
+          price: Number,
+          count: Number,
+        },
+      ],
+    },
+    {
+      timestamp: true,
+    }
+  )
+);
+
+app.post("/api/orders", async (req, res) => {
+  console.log(req.body);
+  if (
+    !req.body.email ||
+    !req.body.name ||
+    !req.body.address ||
+    !req.body.total ||
+    !req.body.cartItems
+  ) {
+    return res.send({ messaeg: "please enter all the reuired field" });
+  }
+  const order = await Order(req.body).save();
+  res.send(order);
+});
+
+app.get("/api/orders", async (req, res) => {
+  const order = await Order.find({});
+  res.send(order);
 });
 
 const port = 5000;
