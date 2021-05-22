@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import formatCurrency from "../util";
+import util from "../util";
 import Fade from "react-reveal/Fade";
+import { removeFromCart } from "../actions/cartActions";
+import { connect } from "react-redux";
 
-export default class Cart extends Component {
+class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,11 +61,13 @@ export default class Cart extends Component {
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <span>
-                        {formatCurrency(item.price)} x {item.count} {"  "}
+                        {util.formatCurrency(item.price)} x {item.count} {"  "}
                       </span>
                       <button
                         className="button primary"
-                        onClick={() => this.props.removeItemFromCart(item)}
+                        onClick={() =>
+                          this.props.removeItemFromCart(item)
+                        }
                       >
                         Remove
                       </button>
@@ -79,7 +83,7 @@ export default class Cart extends Component {
                     style={{ flex: 3, display: "flex", alignItems: "center" }}
                   >
                     Total : {"  "}{" "}
-                    {formatCurrency(
+                    {util.formatCurrency(
                       cartItem.reduce((a, c) => a + c.price * c.count, 0)
                     )}{" "}
                     {"  "}
@@ -141,3 +145,18 @@ export default class Cart extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    cartItem: state.carts.cartItems || [],
+  };
+};
+
+const mapStateToDispatch = (dispatch) => {
+  return {
+    removeItemFromCart: (product) =>
+      dispatch(removeFromCart(product)),
+  };
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Cart);

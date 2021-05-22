@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import formatCurrency from "../util";
+import util from "../util";
 import Fade from "react-reveal/Fade";
 import Zoom from "react-reveal/Zoom";
 import Modal from "react-modal";
 import { connect } from "react-redux";
 import { fetchProducts } from "../actions/productActions";
+import { addToCart } from "../actions/cartActions";
 
 class Product extends Component {
   constructor(props) {
@@ -48,9 +49,11 @@ class Product extends Component {
                     </a>
                   </div>
                   <div className="product-price">
-                    <div> {formatCurrency(product.price)}</div>
+                    <div> {util.formatCurrency(product.price)}</div>
                     <button
-                      onClick={() => this.props.addCart(product)}
+                      onClick={() =>
+                        this.props.addCart(product)
+                      }
                       className="button primary"
                     >
                       Add To Cart
@@ -86,7 +89,9 @@ class Product extends Component {
                       </div>
                     </div>
                     <div class="row space-between">
-                      <div className="p-1">{formatCurrency(product.price)}</div>
+                      <div className="p-1">
+                        {util.formatCurrency(product.price)}
+                      </div>
                       <div>
                         <button className="button primary">Add To Cart</button>
                       </div>
@@ -104,13 +109,15 @@ class Product extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    products: state.products.items,
+    products: state.products.filteredItems,
+    cartItem: state.carts.cartItems || [],
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
+    addCart: (product) => dispatch(addToCart(product)),
   };
 };
 
