@@ -95,5 +95,9 @@ app.get("/api/orders", async (req, res) => {
   res.send(order);
 });
 
-const port = 5000;
-app.listen(port, () => console.log("serve at http://localhost:5000"));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+}
+
+const port = process.env.port || 5000;
+app.listen(port, () => console.log(`serve at http://localhost:${port}`));
