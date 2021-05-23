@@ -25,6 +25,7 @@
   },
   "scripts": {
     "client-install": "npm install",
+    "build": "react-scripts build",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start",
