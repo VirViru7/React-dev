@@ -30,11 +30,11 @@ class Product extends Component {
   render() {
     const { product } = this.state;
     return (
-      <div>
+      <div class="products">
         <Fade bottom cascade>
           {!this.props.products ? (
             <div> Loading....</div>
-          ) : (
+          ) : this.props.products.length > 0 ? (
             <ul className="products">
               {this.props.products.map((product) => (
                 <li key={product._id}>
@@ -51,9 +51,7 @@ class Product extends Component {
                   <div className="product-price">
                     <div> {util.formatCurrency(product.price)}</div>
                     <button
-                      onClick={() =>
-                        this.props.addCart(product)
-                      }
+                      onClick={() => this.props.addCart(product)}
                       className="button primary"
                     >
                       Add To Cart
@@ -62,6 +60,8 @@ class Product extends Component {
                 </li>
               ))}
             </ul>
+          ) : (
+            <div > No Results Match </div>
           )}
         </Fade>
         {product && (
