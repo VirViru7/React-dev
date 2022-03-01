@@ -23,14 +23,17 @@ class Product extends Component {
     this.setState({ product });
   };
 
-  closeModal = () => {
+  closeModal = (product) => {
     this.setState({ product: null });
+    if (product && product._id) {
+      this.props.addCart(product);
+    }
   };
 
   render() {
     const { product } = this.state;
     return (
-      <div class="products">
+      <div className="products">
         <Fade bottom cascade>
           {!this.props.products ? (
             <div> Loading....</div>
@@ -61,11 +64,11 @@ class Product extends Component {
               ))}
             </ul>
           ) : (
-            <div > No Results Match </div>
+            <div> No Results Match </div>
           )}
         </Fade>
         {product && (
-          <Modal isOpen="true" onRequestClose={this.closeModal}>
+          <Modal isOpen={true} onRequestClose={this.closeModal}>
             <Zoom>
               <div className="w-100">
                 <div className="text-right">
@@ -80,20 +83,26 @@ class Product extends Component {
                       <b>{product.title}</b>
                     </div>
                     <div className="m-1">{product.description}</div>
-                    <div class="row m-1">
+                    <div className="row m-1">
                       <label className="p-1">Available Sizes : </label>
-                      <div class="row">
-                        {product.availableSizes.map((p) => (
-                          <div className="modal-product-size">{p}</div>
-                        ))}
+                      <div className="row">
+                        {product.availableSizes &&
+                          product.availableSizes.map((p) => (
+                            <div className="modal-product-size">{p}</div>
+                          ))}
                       </div>
                     </div>
-                    <div class="row space-between">
+                    <div className="row space-between">
                       <div className="p-1">
                         {util.formatCurrency(product.price)}
                       </div>
                       <div>
-                        <button className="button primary">Add To Cart</button>
+                        <button
+                          className="button primary"
+                          onClick={(e) => this.closeModal(product)}
+                        >
+                          Add To Cart
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -117,7 +126,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
-    addCart: (product) => dispatch(addToCart(product)),
+    addCart: (product) => {
+      dispatch(addToCart(product));
+    },
   };
 };
 
